@@ -18,6 +18,8 @@ namespace MyTasks
 
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddTransient<DetailPage>();
+            builder.Services.AddSingleton<DetailViewModel>();
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
