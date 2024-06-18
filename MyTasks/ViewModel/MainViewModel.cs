@@ -6,9 +6,11 @@ namespace MyTasks.ViewModel
 {
     public partial class MainViewModel : ObservableObject
     {
-        public MainViewModel()
+        IConnectivity connectivity;
+        public MainViewModel(IConnectivity connectivity)
         {
             Items = new ObservableCollection<string>();
+            this.connectivity = connectivity;
         }
 
         [ObservableProperty]
@@ -18,10 +20,17 @@ namespace MyTasks.ViewModel
         ObservableCollection<string> items;
 
         [RelayCommand]
-        void Add()
+        async void Add()
         {
             if (string.IsNullOrWhiteSpace(Text))
                 return;
+
+            if (connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                await Shell.Current.DisplayAlert("Uh oh!", "No Internet connection", "Ok");
+                return;
+            }
+
             Items.Add(Text);
             Text = string.Empty;
         }
